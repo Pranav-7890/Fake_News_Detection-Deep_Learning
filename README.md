@@ -1,91 +1,65 @@
-# 📰 Fake News Detector
+# 📰 Fake News Classifier Using LSTM
 
-This project uses Deep Learning (Natural Language Processing) to identify whether a news article is real or fake. It features a Bidirectional LSTM model built with Keras and a user-friendly web interface.
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.8+-orange.svg)](https://tensorflow.org/)
+[![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://python.org)
+[![NLP](https://img.shields.io/badge/NLP-NLTK-green.svg)](https://www.nltk.org/)
 
-## 🚀 Overview
-Misinformation is a significant challenge in the digital age. This project aims to automate the detection of "fake news" by analyzing the linguistic patterns of articles. The model was trained on a balanced dataset of real and fake news, achieving a high level of accuracy.
+An end-to-end Natural Language Processing (NLP) deep learning project that identifies unreliable and fake news articles. By leveraging a Long Short-Term Memory (LSTM) network and custom word embeddings, the model effectively captures the sequential context of news titles to classify them as either fake (1) or real (0).
 
-### Key Features
-*   **Text Preprocessing:** Automated cleaning (lowercase, punctuation removal, etc.).
-*   **Deep Learning:** Utilizes a Bidirectional Long Short-Term Memory (LSTM) network to capture contextual information from text.
-*   **Interactive UI:** A real-time web app built with Streamlit (or Gradio) for easy testing.
+## 🚀 Project Overview
 
-## 🏗️ Model Architecture
-The model is a Sequential neural network with the following layers:
+With the rapid spread of misinformation, automated fake news detection is a critical application of AI. This project utilizes the [Kaggle Fake News Dataset](https://www.kaggle.com/c/fake-news/data) to train a sequence model capable of understanding linguistic nuances and structural patterns in deceptive news titles.
 
-*   **Embedding Layer:** Converts words into 16-dimensional dense vectors.
-*   **Bidirectional LSTM:** Processes sequences forward and backward to understand context.
-*   **Dense Layers:** Fully connected layers with ReLU activation for feature extraction.
-*   **Output Layer:** A single neuron with Sigmoid activation to output a probability (0 to 1).
+### Key Highlights:
+- **Architecture**: Embedding Layer → Dropout (0.3) → LSTM (100 units) → Dropout (0.3) → Dense (Sigmoid).
+- **Text Preprocessing**: Tokenization, regex cleaning, Porter Stemming, and custom one-hot representation (Vocabulary size: 5,000).
+- **Performance**: Achieved **90.37% Accuracy** with robust F1-scores across both classes.
 
-## 🛠️ Installation & Setup
+## 🛠️ Technology Stack
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/Pranav-7890/Fake_News_Detection.git
-    cd fake-news-detector
-    ```
+- **Deep Learning**: TensorFlow / Keras
+- **NLP**: NLTK (Stopwords, PorterStemmer)
+- **Data Manipulation**: Pandas, NumPy
+- **Evaluation**: Scikit-Learn (Confusion Matrix, Classification Report)
+- **Environment**: Jupyter Notebook / VS Code
 
-2.  **Install dependencies**
-    ```bash
-    pip install -r requirements.txt
-    ```
-## 📝 Requirements.txt
+## 🧠 Methodology
 
-This file tells the server (like Hugging Face) exactly which libraries to install. Keep it simple to avoid version conflicts.
-```bash
-### Required Libraries
-numpy
-pandas
-matplotlib
-seaborn
-tensorflow
-sklearn
-nltk
-re
-pickle
-```
-
-
-### Required Files
-Ensure you have the following files in the project root:
-*   `fake_news_detector.keras` (Trained model)
-*   `tokenizer.pickle` (Saved word index)
-
-## 💻 Usage
-
-### Running Locally
-To launch the web interface on your local machine:
-```bash
-streamlit run app.py
-```
-
-### In the Jupyter Notebook
-Open `fake_news.ipynb` to see the full training process, including:
-*   Data Exploration (EDA)
-*   Text cleaning and Tokenization
-*   Model training and Validation
-*   Performance metrics (Accuracy/Loss curves)
+1. **Data Cleaning**: Removed incomplete records (`dropna()`) to maintain sequence integrity.
+2. **Text Processing**: 
+   - Filtered non-alphabetic characters using Regex.
+   - Converted text to lowercase and removed English stopwords.
+   - Applied Porter Stemming to reduce words to their root forms.
+3. **Vectorization**:
+   - Converted text into one-hot encoded vectors based on a 5,000-word vocabulary.
+   - Padded sequences (`maxlen=20`) to ensure uniform input dimensions for the LSTM.
+4. **Model Training**:
+   - Built a Sequential model with a 40-dimensional embedding space.
+   - Integrated Dropout layers to prevent overfitting.
+   - Trained over 10 epochs using the Adam optimizer and Binary Crossentropy loss.
 
 ## 📊 Results
 
-| Metric | Value |
-| :--- | :--- |
-| **Training Accuracy** | ~91% |
-| **Validation Accuracy** | ~89% |
+The model was evaluated on a 33% holdout test set (6,035 samples), yielding the following metrics:
 
-> **Note:** The model performs best on full-text news articles rather than short headlines.
+- **Overall Accuracy**: 90.37%
+- **Precision**: 89% (Fake News), 91% (Real News)
+- **Recall**: 89% (Fake News), 92% (Real News)
+- **F1-Score**: 0.90 (Macro Avg)
 
-## 📁 Project Structure
+## 💻 Installation & Usage
 
-```plaintext
-├── .venv/                   # Virtual environment
-├── app.py                   # Streamlit web application
-├── fake_news.ipynb # Training & Analysis notebook
-├── fake_news_detector.keras    # Saved Keras model
-├── tokenizer.pickle         # Tokenizer object for preprocessing
-└── requirements.txt         # List of dependencies
-```
+It is highly recommended to use `uv` for lightning-fast dependency management.
 
-## 👤 Author
-**Your Name** - [GitHub](https://github.com/Pranav-7890) | [LinkedIn](https://www.linkedin.com/in/pranav-kumar-g/)
+```bash
+# Clone the repository
+git clone [https://github.com/PranavKumarG/fake-news-lstm.git](https://github.com/PranavKumarG/fake-news-lstm.git)
+cd fake-news-lstm
+
+# Initialize a virtual environment and install dependencies using uv
+uv venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+uv pip install pandas numpy tensorflow nltk scikit-learn jupyter
+
+# Launch VS Code or Jupyter
+jupyter notebook FakeNewsClassifierUsingLSTM.ipynb
